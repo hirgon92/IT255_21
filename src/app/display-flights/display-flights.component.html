@@ -1,0 +1,29 @@
+<div class="ui container">
+    <button class="ui secondary button small" (click)="shuffleArray(flightsToShow)">Shuffle</button>
+    <div class="ui horizontal divider">
+        <h4 class="ui header"><i class="plane icon"></i> Available flights</h4>
+    </div>
+
+    <div class="ui container center aligned three column grid">
+        <div *ngFor="let flight of flightsToShow" class="ui card">
+            <div class="image"><img src="../../assets/air_serbia.png"></div>
+            <div class="content">
+                <h4 class="ui header"> Flight number: {{flight.flight_number}}</h4>
+                <div class="meta"> {{flight.flight_path}}</div>
+                <div class="description"> Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nulla nobis modi
+                    illum quia dolore quae.</div>
+            </div>
+            <h5 class="ui header"><span>{{flight.flight_date | date }}</span></h5>
+
+            <div class="extra content">
+                <p>
+                    <ng-template [ngIf]="checkSeats(flight.flight_seats)">
+                        <i class="user icon"></i> Seats left : {{flight.flight_seats}}
+                    </ng-template>
+                </p>
+            </div>
+
+        </div>
+    </div>
+</div>
+<div class="ui hidden divider"></div>

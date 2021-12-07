@@ -1,0 +1,54 @@
+<div class="ui container">
+    <div class="ui horizontal divider">
+        <h4 class="ui header">
+            <i class="plus circle icon"></i>Add Flights
+        </h4>
+    </div>
+    <div class="ui text container very padded segment">
+        <form action="" class="ui form" id="addForm" #addFlightForm>
+            <div class="six wide field">
+                <label for="flight_number">Flight number</label>
+                <input type="text" name="flight_number" id="FN" placeholder="Flight Number" #flightnumber>
+            </div>
+            <div class="two fields">
+                <div class="field">
+                    <label for="fromDestination">From</label>
+                    <select name="fromDestination" id="FD" class="ui fluid dropdown" #fromD>
+                        <option value="" disabled selected hidden>From</option>
+                        <option value="BEG">Belgrade</option>
+                        <option value="INI">Nis</option>
+                        <option value="TIV">Tivat</option>
+                        <option value="TGD">Podgorica</option>
+                        <option value="ZAG">Zagreb</option>
+                        <option value="SPU">Split</option>
+                    </select>
+                </div>
+                <div class="field">
+                    <label for="toDestination">To</label>
+                    <select name="toDestination" id="TD" class="ui fluid dropdown" #toD>
+                        <option value="" disabled selected hidden>To</option>
+                        <option value="BEG">Belgrade</option>
+                        <option value="INI">Nis</option>
+                        <option value="TIV">Tivat</option>
+                        <option value="TGD">Podgorica</option>
+                        <option value="ZAG">Zagreb</option>
+                        <option value="SPU">Split</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="field">
+                <label for="date">Date</label>
+                <input type="datetime-local" id="DT" #flightDate>
+            </div>
+            <div class="field">
+                <label for="seats">Available seats</label>
+                <input type="number" min="1" max="250" name="seats" id="AS" #seats>
+            </div>
+            <div class="ui right floated primary button"
+                (click)="addFlight(flightnumber,fromD,toD,flightDate,seats);clearForm(addFlightForm)">Add
+                Flight</div>
+        </form>
+    </div>
+</div>
+<div class="ui hidden divider"></div>
