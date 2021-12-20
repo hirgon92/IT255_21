@@ -5,7 +5,7 @@
     </div>
 
     <div class="ui container center aligned three column grid">
-        <div *ngFor="let flight of flightsToShow" class="ui card">
+        <div *ngFor="let flight of flightsToShow" class="ui card" >
             <div class="image"><img src="../../assets/air_serbia.png"></div>
             <div class="content">
                 <h4 class="ui header"> Flight number: {{flight.flight_number}}</h4>
@@ -22,8 +22,75 @@
                     </ng-template>
                 </p>
             </div>
+            <div class="two ui buttons">
+                <button class="ui teal basic button" (click)="editFlight(flight)">Edit</button>
+                <div class="or"></div>
+                <button class="ui red basic button" (click)="removeFlight(flight)">Delete</button>
+            </div>
 
         </div>
     </div>
+    
 </div>
 <div class="ui hidden divider"></div>
+
+<ng-template [ngIf]="spawnEdit()">
+    <div class="ui container">
+        <div class="ui horizontal divider">
+            <h4 class="ui header">
+                <i class="ui edit icon"></i>Edit Flight
+            </h4>
+        </div>
+        <div class="ui text container very padded segment">
+            <h3 class="ui header">
+                <i class="edit icon"></i>
+                <div class="content">Editing Flight : {{flight_ID}}</div>
+            </h3>
+            <form action="" class="ui form" id="editForm" #editFlightForm>
+                <div class="six wide field">
+                    <label for="flight_number">Flight number</label>
+                    <input type="text" name="flight_number" id="FN" placeholder="Flight Number" #editFlightNumber>
+                </div>
+                <div class="two fields">
+                    <div class="field">
+                        <label for="fromDestination">From</label>
+                        <select name="fromDestination" id="FD" class="ui fluid dropdown" #editFromD>
+                            <option value="" disabled selected hidden>From</option>
+                            <option value="BEG">Belgrade</option>
+                            <option value="INI">Nis</option>
+                            <option value="TIV">Tivat</option>
+                            <option value="TGD">Podgorica</option>
+                            <option value="ZAG">Zagreb</option>
+                            <option value="SPU">Split</option>
+                        </select>
+                    </div>
+                    <div class="field">
+                        <label for="toDestination">To</label>
+                        <select name="toDestination" id="TD" class="ui fluid dropdown" #editToD>
+                            <option value="" disabled selected hidden>To</option>
+                            <option value="BEG">Belgrade</option>
+                            <option value="INI">Nis</option>
+                            <option value="TIV">Tivat</option>
+                            <option value="TGD">Podgorica</option>
+                            <option value="ZAG">Zagreb</option>
+                            <option value="SPU">Split</option>
+                        </select>
+                    </div>
+                </div>
+    
+                <div class="field">
+                    <label for="date">Date</label>
+                    <input type="datetime-local" id="DT" #editFlightDate>
+                </div>
+                <div class="field">
+                    <label for="seats">Available seats</label>
+                    <input type="number" min="1" max="250" name="seats" id="AS" #editSeats>
+                </div>
+                <div class="ui right floated primary button"
+                    (click)="onEdit(editFlightNumber,editFromD,editToD,editFlightDate,editSeats);clearForm(editFlightForm)">Edit
+                    Flight</div>
+            </form>
+        </div>
+    </div>
+    <div class="ui hidden divider"></div>
+</ng-template>

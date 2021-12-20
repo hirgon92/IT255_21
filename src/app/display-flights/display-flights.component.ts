@@ -1,4 +1,5 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { CheckboxControlValueAccessor } from '@angular/forms';
 import { Flight } from '../flight.model';
 
 @Component({
@@ -9,6 +10,10 @@ import { Flight } from '../flight.model';
 export class DisplayFlightsComponent implements OnInit {
 
   @Input() flightsToShow: Array<Flight>;
+  @Output() flightToUpdate: EventEmitter<Flight>;
+  @Output() flightToDelete: EventEmitter<Flight>;
+  spawnForm: boolean = false;
+  private flight_ID: string;
 
   constructor() { }
 
@@ -28,5 +33,30 @@ export class DisplayFlightsComponent implements OnInit {
       array[i] = t;
     }
     return array;
+  }
+  editFlight(currentFlight: Flight) {
+    this.flight_ID = currentFlight.flight_number;
+    this.spawnForm = !this.spawnForm;
+  }
+  onEdit(editFlightNumber: HTMLInputElement,editFromD: HTMLInputElement, editToD: HTMLInputElement, editFlightDate: HTMLInputElement, editSeats: HTMLInputElement){
+    this.flightsToShow.forEach(flight => {
+      if(this.flight_ID == flight.flight_number){
+        flight.flight_number = editFlightNumber.value.toString();
+        flight.flight_path = editFromD.value.toString().concat(">").concat(editToD.value.toString());
+        flight.flight_date = new Date(editFlightDate.value);
+        flight.flight_seats = parseInt(editSeats.value);
+      }
+    });
+  }
+
+  removeFlight(currentFlight: Flight){
+    this.flightsToShow.forEach(flight => {
+      if(currentFlight.flight_number == flight.flight_number)[
+        this.flightsToShow.splice(this.flightsToShow.indexOf(flight),1)
+      ]
+    });
+  }
+  spawnEdit(): boolean{
+    return this.spawnForm;
   }
 }
