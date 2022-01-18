@@ -5,15 +5,20 @@
         </h4>
     </div>
     <div class="ui text container very padded segment">
-        <form action="" class="ui form" id="addForm" #addFlightForm>
+        <form [formGroup]="inputFG" class="ui form" id="addForm" #addFlightForm >
             <div class="six wide field">
                 <label for="flight_number">Flight number</label>
-                <input type="text" name="flight_number" id="FN" placeholder="Flight Number" #flightnumber>
+                <input formControlName="inputFN" type="text" name="flight_number" id="FN" placeholder="Flight Number" #flightnumber>
+                <div *ngIf="inputFN.touched && inputFN.invalid" class="ui pointing red basic label">
+                    <div *ngIf="inputFN.errors.required">Flight Number is required</div>
+                    <div *ngIf="inputFN.errors.minlength">Flight Number should be minimum {{ inputFN.errors.minlength.requiredLength }} characters </div>
+                    <div *ngIf="inputFN.errors.pattern">First 2 characters must be capital letters</div>
+                </div>
             </div>
             <div class="two fields">
                 <div class="field">
                     <label for="fromDestination">From</label>
-                    <select name="fromDestination" id="FD" class="ui fluid dropdown" #fromD>
+                    <select formControlName="inputFrom" name="fromDestination" id="FD" class="ui fluid dropdown" #fromD>
                         <option value="" disabled selected hidden>From</option>
                         <option value="BEG">Belgrade</option>
                         <option value="INI">Nis</option>
@@ -22,10 +27,11 @@
                         <option value="ZAG">Zagreb</option>
                         <option value="SPU">Split</option>
                     </select>
+                    <div *ngIf="inputFrom.touched && inputFrom.invalid" class="ui pointing red basic label">From Destination is required</div>
                 </div>
                 <div class="field">
                     <label for="toDestination">To</label>
-                    <select name="toDestination" id="TD" class="ui fluid dropdown" #toD>
+                    <select formControlName="inputTo" name="toDestination" id="TD" class="ui fluid dropdown" #toD>
                         <option value="" disabled selected hidden>To</option>
                         <option value="BEG">Belgrade</option>
                         <option value="INI">Nis</option>
@@ -34,20 +40,26 @@
                         <option value="ZAG">Zagreb</option>
                         <option value="SPU">Split</option>
                     </select>
+                    <div *ngIf="inputTo.touched && inputTo.invalid" class="ui pointing red basic label">To Destination is required</div>
                 </div>
             </div>
 
             <div class="field">
                 <label for="date">Date</label>
-                <input type="datetime-local" id="DT" #flightDate>
+                <input formControlName="inputDate" type="datetime-local" id="DT" #flightDate>
+                <div *ngIf="inputDate.touched && inputDate.invalid" class="ui pointing red basic label">Date is required</div>
             </div>
             <div class="field">
                 <label for="seats">Available seats</label>
-                <input type="number" min="1" max="250" name="seats" id="AS" #seats>
+                <input formControlName="inputSeats" type="number" min="1" max="250" name="seats" id="AS" #seats>
+                <div *ngIf="inputSeats.touched && inputSeats.invalid" class="ui pointing red basic label">
+                    <div *ngIf="inputSeats.errors.required">Available seats is required</div>
+                    <div *ngIf="inputSeats.errors.min || inputSeats.errors.max">Available seats should be between {{ seats.min }} and {{ seats.max }}</div>
+                </div>
             </div>
-            <div class="ui right floated primary button"
-                (click)="addFlight(flightnumber,fromD,toD,flightDate,seats);clearForm(addFlightForm)">Add
-                Flight</div>
+            <button class="ui right floated primary button"
+                (click)="addFlight(flightnumber,fromD,toD,flightDate,seats);clearForm(addFlightForm)" [disabled]="inputFG.invalid">
+                Add Flight</button>
         </form>
     </div>
 </div>

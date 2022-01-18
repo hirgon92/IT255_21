@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { CheckboxControlValueAccessor } from '@angular/forms';
+import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { Flight } from '../flight.model';
 
 @Component({
@@ -19,6 +19,7 @@ export class DisplayFlightsComponent implements OnInit {
 
   ngOnInit(): void {
   }
+
   checkSeats(seats: Number): boolean {
     return seats <= 10 ? true : false;
   }
@@ -58,5 +59,9 @@ export class DisplayFlightsComponent implements OnInit {
   }
   spawnEdit(): boolean{
     return this.spawnForm;
+  }
+
+  onEditFormSubmit(){
+
   }
 }

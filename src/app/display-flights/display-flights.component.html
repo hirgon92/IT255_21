@@ -34,7 +34,7 @@
 </div>
 <div class="ui hidden divider"></div>
 
-<ng-template [ngIf]="spawnEdit()">
+<div *ngIf="spawnEdit()">
     <div class="ui container">
         <div class="ui horizontal divider">
             <h4 class="ui header">
@@ -46,7 +46,7 @@
                 <i class="edit icon"></i>
                 <div class="content">Editing Flight : {{flight_ID}}</div>
             </h3>
-            <form action="" class="ui form" id="editForm" #editFlightForm>
+            <form action="" class="ui form" id="editForm" (ngSubmit)="onEditFormSubmit()" #editFlightForm>
                 <div class="six wide field">
                     <label for="flight_number">Flight number</label>
                     <input type="text" name="flight_number" id="FN" placeholder="Flight Number" #editFlightNumber>
@@ -84,7 +84,7 @@
                 </div>
                 <div class="field">
                     <label for="seats">Available seats</label>
-                    <input type="number" min="1" max="250" name="seats" id="AS" #editSeats>
+                    <input type="number" name="seats" id="AS" #editSeats>
                 </div>
                 <div class="ui right floated primary button"
                     (click)="onEdit(editFlightNumber,editFromD,editToD,editFlightDate,editSeats);clearForm(editFlightForm)">Edit
@@ -93,4 +93,4 @@
         </div>
     </div>
     <div class="ui hidden divider"></div>
-</ng-template>
+</div>
