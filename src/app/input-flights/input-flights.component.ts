@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, FormsModule, Validators } from '@angular/forms';
+import { AbstractControl, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Flight } from '../flight.model';
 
 @Component({
@@ -43,7 +43,7 @@ export class InputFlightsComponent implements OnInit {
 
   @Input() flights:Array<Flight>;
   @Output() newFlightEvent = new EventEmitter<Flight>()
-  tempFlight = new Flight("","","","",0);
+  tempFlight = new Flight("","","","",0,0);
   constructor() {
    }
 

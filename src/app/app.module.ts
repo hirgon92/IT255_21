@@ -7,6 +7,7 @@ import { HeaderComponent } from './header/header.component';
 import { DisplayFlightsComponent } from './display-flights/display-flights.component';
 import { InputFlightsComponent } from './input-flights/input-flights.component';
 import { FooterComponent } from './footer/footer.component';
+import { BookServiceService } from './book-service.service';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,9 @@ import { FooterComponent } from './footer/footer.component';
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [],
+  providers: [
+    BookServiceService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

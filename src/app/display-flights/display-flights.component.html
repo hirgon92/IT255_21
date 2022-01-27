@@ -5,7 +5,7 @@
     </div>
 
     <div class="ui container center aligned three column grid">
-        <div *ngFor="let flight of flightsToShow" class="ui card" >
+        <div *ngFor="let flight of flightsToShow" class="ui card">
             <div class="image"><img src="../../assets/air_serbia.png"></div>
             <div class="content">
                 <h4 class="ui header"> Flight number: {{flight.flight_number}}</h4>
@@ -22,6 +22,8 @@
                     </ng-template>
                 </p>
             </div>
+            <div class="ui positive basic button" (click)="onBook(flight)">Book</div>
+
             <div class="two ui buttons">
                 <button class="ui teal basic button" (click)="editFlight(flight)">Edit</button>
                 <div class="or"></div>
@@ -30,7 +32,32 @@
 
         </div>
     </div>
-    
+
+</div>
+<div class="ui hidden divider"></div>
+<div *ngIf="flightBooked()">
+    <div class="ui text container very padded segment">
+        <h3 class="ui header">
+            <i class="calculator icon"></i>
+            <div class="content">Calculating price for Flight: {{flight_ID}}</div>
+        </h3>
+        <form [formGroup]="bookingForm">
+            <div class="ui action input">
+                <input type="text" placeholder="Number of tickets" min="1" formControlName="bookingInput"
+                    #numberOfTickets>
+                <button class="ui green button" (click)="onCalculate(numberOfTickets)" [disabled]="bookingForm.invalid">Show price</button>
+                <div *ngIf="bookingInput.touched && bookingInput.invalid" class="ui left pointing red basic label">
+                    <div *ngIf="bookingInput.errors.required">Number of tickets is required !</div>
+                    <div *ngIf="bookingInput.errors.pattern">Only numbers starting from {{ numberOfTickets.min }} are
+                        allowed ! </div>
+                </div>
+                <div class="right attached ui basic button" *ngIf="priceCalculated()"> <a
+                        class="ui large violet tag label">{{ calculatedPrice }} <i class="euro sign icon"></i> </a>
+                </div>
+                
+            </div>
+        </form>
+    </div>
 </div>
 <div class="ui hidden divider"></div>
 
@@ -77,7 +104,7 @@
                         </select>
                     </div>
                 </div>
-    
+
                 <div class="field">
                     <label for="date">Date</label>
                     <input type="datetime-local" id="DT" #editFlightDate>
@@ -87,7 +114,8 @@
                     <input type="number" name="seats" id="AS" #editSeats>
                 </div>
                 <div class="ui right floated primary button"
-                    (click)="onEdit(editFlightNumber,editFromD,editToD,editFlightDate,editSeats);clearForm(editFlightForm)">Edit
+                    (click)="onEdit(editFlightNumber,editFromD,editToD,editFlightDate,editSeats);clearForm(editFlightForm)">
+                    Edit
                     Flight</div>
             </form>
         </div>

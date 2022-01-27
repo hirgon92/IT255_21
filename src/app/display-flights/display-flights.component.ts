@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { BookServiceService } from '../book-service.service';
 import { Flight } from '../flight.model';
 
 @Component({
@@ -12,10 +13,26 @@ export class DisplayFlightsComponent implements OnInit {
   @Input() flightsToShow: Array<Flight>;
   @Output() flightToUpdate: EventEmitter<Flight>;
   @Output() flightToDelete: EventEmitter<Flight>;
-  spawnForm: boolean = false;
+  private spawnForm: boolean = false;
+  private flight_booked: boolean = false;
   private flight_ID: string;
+  private calculateService;
+  private calculatedPrice;
 
-  constructor() { }
+  public bookingForm = new FormGroup({
+    bookingInput: new FormControl("",[
+      Validators.required, 
+      Validators.pattern(new RegExp('^[1-9]+$'))
+    ])
+  });
+
+  get bookingInput(){
+    return this.bookingForm.get('bookingInput')
+  }
+  
+  constructor(BookService: BookServiceService) {
+    this.calculateService = BookService;
+  }
 
   ngOnInit(): void {
   }
@@ -39,9 +56,9 @@ export class DisplayFlightsComponent implements OnInit {
     this.flight_ID = currentFlight.flight_number;
     this.spawnForm = !this.spawnForm;
   }
-  onEdit(editFlightNumber: HTMLInputElement,editFromD: HTMLInputElement, editToD: HTMLInputElement, editFlightDate: HTMLInputElement, editSeats: HTMLInputElement){
+  onEdit(editFlightNumber: HTMLInputElement, editFromD: HTMLInputElement, editToD: HTMLInputElement, editFlightDate: HTMLInputElement, editSeats: HTMLInputElement) {
     this.flightsToShow.forEach(flight => {
-      if(this.flight_ID == flight.flight_number){
+      if (this.flight_ID == flight.flight_number) {
         flight.flight_number = editFlightNumber.value.toString();
         flight.flight_path = editFromD.value.toString().concat(">").concat(editToD.value.toString());
         flight.flight_date = new Date(editFlightDate.value);
@@ -50,18 +67,31 @@ export class DisplayFlightsComponent implements OnInit {
     });
   }
 
-  removeFlight(currentFlight: Flight){
+  removeFlight(currentFlight: Flight) {
     this.flightsToShow.forEach(flight => {
-      if(currentFlight.flight_number == flight.flight_number)[
-        this.flightsToShow.splice(this.flightsToShow.indexOf(flight),1)
+      if (currentFlight.flight_number == flight.flight_number) [
+        this.flightsToShow.splice(this.flightsToShow.indexOf(flight), 1)
       ]
     });
   }
-  spawnEdit(): boolean{
+  spawnEdit(): boolean {
     return this.spawnForm;
   }
 
-  onEditFormSubmit(){
+  onBook(currentFlight: Flight) {
+    this.flight_ID = currentFlight.flight_number;
+    this.calculateService.tempFlight = currentFlight;
+    this.flight_booked = !this.flight_booked;
+  }
+  flightBooked(): boolean {
+    return this.flight_booked;
+  }
 
+  onCalculate(numberOfTickets: HTMLInputElement) {
+   this.calculatedPrice = this.calculateService.calculateTrip(parseInt(numberOfTickets.value))
+  }
+
+  priceCalculated(){
+    return true
   }
 }
